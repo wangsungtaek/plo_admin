@@ -22,6 +22,13 @@ INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'bbbbbb', 'bbbb', 'B맨', 'bbb@
 INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'cccccc', 'cccc', 'C맨', 'ccc@naver.com', sysdate);
 INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'dddddd', 'dddd', 'D맨', 'ddd@naver.com', sysdate);
 INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'eeeeee', 'eeee', 'E맨', 'eee@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'ffffff', 'ffff', 'F맨', 'fff@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'gggggg', 'gggg', 'G맨', 'ggg@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'hhhhhh', 'hhhh', 'H맨', 'hhh@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'iiiiii', 'iiii', 'I맨', 'iii@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'jjjjjj', 'jjjj', 'J맨', 'jjj@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'kkkkkk', 'kkkk', 'K맨', 'kkk@naver.com', sysdate);
+INSERT INTO P_USER VALUES(P_USER_NO_SEQ.NEXTVAL, 'llllll', 'llll', 'L맨', 'lll@naver.com', sysdate);
 
 -- 조회
 SELECT * FROM P_USER;
