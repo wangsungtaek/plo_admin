@@ -40,10 +40,6 @@
 </head>
 <body>
 
-	<div id="top-nav" class="text-center">
-		<p class="h1 align-items-center">해더영역</p>
-	</div>
-
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -190,7 +186,7 @@
 					</div>
 
 					<!-- card -->
-					<div class="card shadow mb-4 w-50">
+					<div class="card shadow mb-4 w-25">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">회원 등록</h6>
 						</div>

@@ -8,10 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import plo.web.admin.entity.RegUser;
-import plo.web.admin.entity.User;
+import plo.web.admin.entity.Artist;
 
-public class UserManagerService {
+public class ArtistManagerService {
 	
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -39,43 +38,14 @@ public class UserManagerService {
 		}
 	}
 
-	// 전체 리스트 (전체)
-	public ArrayList<User> getUserTotal() {
-		ArrayList<User> userList = new ArrayList<User>();
-		String sql = "SELECT * FROM P_USER";
-		
-		System.out.println(sql);
-		try {
-			setCon();
-			
-			prst = conn.prepareStatement(sql);
-			rs = prst.executeQuery();
-			
-			while(rs.next()) {
-				int no = rs.getInt("U_NO");
-				String id = rs.getString("U_ID");
-				String pass = rs.getString("U_PASS");
-				String name = rs.getString("U_NAME");
-				String mail = rs.getString("U_MAIL");
-				Date date = rs.getDate("U_DATE");
-				
-				userList.add(new User(no, id, pass, name, mail, date));
-			}
-			
-			rs.close();
-			prst.close();
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-		return userList;
+	// 아티스트 조회
+	public ArrayList<Artist> getArtistList(){
+		return getArtistList(1, 99999);
 	}
 	
-	// 회원 리스트
-	public ArrayList<User> getUserList(int page, int cnt) {
-		ArrayList<User> userList = new ArrayList<User>();
+	// 아티스트 조회
+	public ArrayList<Artist> getArtistList(int page, int cnt) {
+		ArrayList<Artist> artistList = new ArrayList<Artist>();
 		String sql = "";
 		
 		int start = 1 + (page-1)*cnt;
@@ -84,7 +54,7 @@ public class UserManagerService {
 		
 		sql = "SELECT * FROM (\n"
 				+ "	SELECT ROWNUM num, u.* FROM (\n"
-				+ "		SELECT * FROM P_USER ORDER BY U_NO DESC\n"
+				+ "		SELECT * FROM P_ARTIST ORDER BY ART_NO DESC\n"
 				+ "	) u\n"
 				+ ") WHERE num BETWEEN ? AND ?";
 		System.out.println(sql);
@@ -97,14 +67,13 @@ public class UserManagerService {
 			rs = prst.executeQuery();
 			
 			while(rs.next()) {
-				int no = rs.getInt("U_NO");
-				String id = rs.getString("U_ID");
-				String pass = rs.getString("U_PASS");
-				String name = rs.getString("U_NAME");
-				String mail = rs.getString("U_MAIL");
-				Date date = rs.getDate("U_DATE");
+				int no = rs.getInt("ART_NO");
+				String name = rs.getString("ART_NAME");
+				String gender = rs.getString("ART_GENDER");
+				String group = rs.getString("ART_GROUP");
+				String img = rs.getString("ART_IMG");
 				
-				userList.add(new User(no, id, pass, name, mail, date));
+				artistList.add(new Artist(no, name, gender, group, img));
 			}
 			
 			rs.close();
@@ -115,15 +84,15 @@ public class UserManagerService {
 			e.printStackTrace();
 		}
 			
-		return userList;
+		return artistList;
 	}
 	
-	// 등록된 회원 수
-	public int count() {
+	// 등록된 아티스트 수
+	public int countArtist() {
 		String sql = "";
 		int cnt = 0;
 		
-		sql = "SELECT count(*) cnt FROM P_USER";
+		sql = "SELECT count(*) cnt FROM P_ARTIST";
 		System.out.println(sql);
 		try {
 			setCon();
@@ -144,26 +113,25 @@ public class UserManagerService {
 		return cnt;	
 	}
 
-	// 회원 상세
-	public User userInfo(int u_no) {
-		User user = new User();
+	// 아티스트 상세
+	public Artist artistDetail(int art_no) {
+		Artist artist = new Artist();
 		
-		String sql = "SELECT * FROM P_USER WHERE u_no = ?";
+		String sql = "SELECT * FROM P_ARTIST WHERE art_no = ?";
 		System.out.println(sql);
 		try {
 			setCon();
 			
 			prst = conn.prepareStatement(sql);
-			prst.setInt(1, u_no);
+			prst.setInt(1, art_no);
 			rs = prst.executeQuery();
 			
 			if(rs.next()) {
-				user.setU_no(rs.getInt("U_NO"));
-				user.setU_id(rs.getString("U_ID"));
-				user.setU_pass(rs.getString("U_PASS"));
-				user.setU_name(rs.getString("U_NAME"));
-				user.setU_mail(rs.getString("U_MAIL"));
-				user.setU_date(rs.getDate("U_DATE"));
+				artist.setArt_no(rs.getInt("ART_NO"));
+				artist.setArt_name(rs.getString("ART_NAME"));
+				artist.setArt_gender(rs.getString("ART_GENDER"));
+				artist.setArt_group(rs.getString("ART_GROUP"));
+				artist.setArt_img(rs.getString("ART_IMG"));
 			}
 			
 			rs.close();
@@ -174,25 +142,24 @@ public class UserManagerService {
 			e.printStackTrace();
 		}
 			
-		return user;
+		return artist;
 	}
 	
-	// 회원 등록
-	public boolean userReg(RegUser user) {
+	// 아티스트 등록
+	public boolean artistReg(Artist artist) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO P_USER \n"
-			+ "VALUES(P_USER_NO_SEQ.NEXTVAL, ?, ?, ?, ?, to_date(?, 'yyyy-mm-dd'))";
+		String sql = "INSERT INTO P_ARTIST \n"
+			+ "VALUES(P_ARTIST_NO_SEQ.NEXTVAL, ?, ?, ?, ?)";
 		System.out.println(sql);
 		try {
 			setCon();
 			
 			prst = conn.prepareStatement(sql);
-			prst.setString(1, user.getU_id());
-			prst.setString(2, user.getU_pass());
-			prst.setString(3, user.getU_name());
-			prst.setString(4, user.getU_mail());
-			prst.setString(5, user.getU_date_s());
+			prst.setString(1, artist.getArt_name());
+			prst.setString(2, artist.getArt_gender());
+			prst.setString(3, artist.getArt_group());
+			prst.setString(4, artist.getArt_img());
 			
 			rs = prst.executeQuery();
 			
@@ -210,17 +177,17 @@ public class UserManagerService {
 		
 	}
 	
-	// 회원 삭제
-	public boolean userDel(int u_no) {
+	// 아티스트 삭제
+	public boolean artistDel(int art_no) {
 		boolean success = false;
 		
-		String sql = "DELETE P_USER WHERE u_no = ?";
+		String sql = "DELETE P_ARTIST WHERE art_no = ?";
 		System.out.println(sql);
 		try {
 			setCon();
 			
 			prst = conn.prepareStatement(sql);
-			prst.setInt(1, u_no);
+			prst.setInt(1, art_no);
 			
 			rs = prst.executeQuery();
 			
@@ -237,27 +204,26 @@ public class UserManagerService {
 		return success;
 	}
 	
-	// 회원 수정
-	public boolean userUpdate(RegUser user) {
+	// 아티스트 수정
+	public boolean artistUpdate(Artist artist) {
 		boolean success = false;
 		
-		String sql = "UPDATE P_USER\n"
-				+ "   SET u_pass = ?,\n"
-				+ "   	   u_name = ?,\n"
-				+ "   	   u_mail = ?,\n"
-				+ "   	   u_date = ?\n"
-				+ " WHERE u_no = ?";
-		
+		String sql = "UPDATE P_ARTIST\n"
+				+ "   SET art_name = ?,\n"
+				+ "   	  art_gender = ?,\n"
+				+ "   	  art_group = ?,\n"
+				+ "   	  art_img = ?\n"
+				+ " WHERE art_no = ?";
 		System.out.println(sql);
 		try {
 			setCon();
 			
 			prst = conn.prepareStatement(sql);
-			prst.setString(1, user.getU_pass());
-			prst.setString(2, user.getU_name());
-			prst.setString(3, user.getU_mail());
-			prst.setString(4, user.getU_date_s());
-			prst.setInt(5, user.getU_no());
+			prst.setString(1, artist.getArt_name());
+			prst.setString(2, artist.getArt_gender());
+			prst.setString(3, artist.getArt_group());
+			prst.setString(4, artist.getArt_img());
+			prst.setInt(5, artist.getArt_no());
 			
 			rs = prst.executeQuery();
 			
@@ -277,12 +243,16 @@ public class UserManagerService {
 	
 	public static void main(String[] args) {
 		
-//		UserManagerService service = new UserManagerService();
-//		RegUser user = new RegUser("2020-11-01");
-//		user.setU_id("test");
-//		user.setU_pass("test");
-//		user.setU_name("test");
-//		user.setU_mail("test@asdf");
-//		service.userReg(user);
+//		ArtistManagerService service = new ArtistManagerService();
+//		ArrayList<Artist> artists = service.getArtistList(1,2);
+//		for(Artist artist : artists)
+//			System.out.println(artist.getArt_name());
+//		System.out.println(service.countArtist());
+//		Artist detail = service.artistDetail(1);
+//		System.out.println(detail.getArt_name());
+//		
+//		System.out.println(service.artistDel(6));
+//		boolean test = service.artistUpdate(new Artist(7, "test(변경)","여자","그룹","img/asdf.png"));
+//		System.out.println(test);
 	}
 }

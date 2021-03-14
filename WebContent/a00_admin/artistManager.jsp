@@ -163,8 +163,8 @@
 				<div id="collapse_faq" class="collapse">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">FAQ 관리:</h6>
-						<a class="collapse-item" href="${path}/faqManager">FAQ 조회</a> <a
-							class="collapse-item" href="${path}/faqReg">FAQ 등록</a>
+						<a class="collapse-item" href="${path}/faqManager">FAQ 조회</a>
+						<a class="collapse-item" href="${path}/faqReg">FAQ 등록</a>
 					</div>
 				</div></li>
 		</ul>
@@ -182,13 +182,13 @@
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-3 text-gray-800">회원 정보</h1>
+						<h1 class="h3 mb-3 text-gray-800">아티스트 정보</h1>
 					</div>
 
 					<!-- DataTale -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">회원 조회</h6>
+							<h6 class="m-0 font-weight-bold text-primary">아티스트 조회</h6>
 						</div>
 
 						<!-- DataTable : Data -->
@@ -200,38 +200,38 @@
 									width="100%" cellspacing="0">
 									<thead>
 										<tr> 
-											<th>회원 번호</th>
-											<th>아이디</th>
-											<th>비밀번호</th>
-											<th>이름</th>
-											<th>이메일</th>
-											<th>생년월일</th>
+											<th>번호</th>
+											<th>아티스트명</th>
+											<th>성별</th>
+											<th>그룹여부</th>
+											<th>이미지</th>
 											<th class="text-center"><input type="checkbox" onclick="allSelect()" /></th>
 										</tr>
 									</thead>
+									
 									<tbody>
-										<c:forEach var="user" items="${userList}">
-										<tr ondblclick="detail(${user.u_no})">
-											<td>${user.u_no}</td>
-											<td>${user.u_id}</td>
-											<td>${user.u_pass}</td>
-											<td>${user.u_name}</td>
-											<td>${user.u_mail}</td>
-											<td>${user.u_date}</td>
+										<c:forEach var="artist" items="${list}">
+										<tr ondblclick="detail(${artist.art_no})">
+											<td>${artist.art_no}</td>
+											<td>${artist.art_name}</td>
+											<td>${artist.art_gender}</td>
+											<td>${artist.art_group}</td>
+											<td>${artist.art_img}</td>
 											<td class="text-center"><input type="checkbox" name="checkId"
-												value="${user.u_no}"/></td>
+												value="${artist.art_no}"/></td>
 										</tr>
 										</c:forEach>
 									</tbody>
 								</table>
 								</form>
 							</div>
+							
 
 							<!-- table bottom -->
 							<div class="row mb-1">
 								<c:set var="page" value="${(empty param.p)?1:param.p}" />
 								<c:set var="startNum" value="${page-(page-1)%5}"/>
-								<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(userCnt/10), '.')}"/>
+								<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(cnt/10), '.')}"/>
 
 								<!-- page info -->
 								<div class="col-sm-12 col-md-12 col-lg-2 mb-2">
@@ -305,21 +305,20 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">회원 상세</h5>
+					<h5 class="modal-title" id="exampleModalLabel">아티스트 상세</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				
 				<form method="post" id="modal-form">
-				<input type="hidden" value="" name="isUpdate"/>
+				<input type="hidden" value="" name="isUpdate">
 				<div class="modal-body wd-70">
 					<table class="table table-bordered mb-0" width="100%" cellspacing="0">
-						<tr><th>번호</th><td><input name="u_no" type="text" readonly="readonly"/></td></tr>
-						<tr><th>아이디</th><td><input name="u_id" type="text" readonly="readonly"/></td></tr>
-						<tr><th>비밀번호</th><td><input name="u_pass" type="text"/></td></tr>
-						<tr><th>이름</th><td><input name="u_name" type="text"/></td></tr>
-						<tr><th>메일</th><td><input name="u_mail" type="text"/></td></tr>
-						<tr><th>생년월일</th><td><input name="u_date" type="date"/></td></tr>
+						<tr><th>번호</th><td><input name="art_no" type="text" readonly="readonly" /></td></tr>
+						<tr><th>아티스트명</th><td><input name="art_name" type="text"/></td></tr>
+						<tr><th>성별</th><td><input name="art_gender" type="text"/></td></tr>
+						<tr><th>그룹여부</th><td><input name="art_group" type="text"/></td></tr>
+						<tr><th>이미지</th><td><input name="art_img" type="text"/></td></tr>
 					</table>
 				</div>
 				</form>
@@ -358,16 +357,15 @@
 		
 		var xhr = new XMLHttpRequest();
 		function detail(no){
-			xhr.open("get", "${path}/a00_admin/z01_userDetail.jsp?no="+no, true);
+			xhr.open("get", "${path}/a00_admin/z03_artistDetail.jsp?no="+no, true);
 			xhr.onreadystatechange = function() {
 				if(xhr.readyState == 4 && xhr.status == 200){
-					var user = JSON.parse(xhr.responseText);
-					$('[name=u_no]').val(user.u_no);
-					$('[name=u_id]').val(user.u_id);
-					$('[name=u_pass]').val(user.u_pass);
-					$('[name=u_name]').val(user.u_name);
-					$('[name=u_mail]').val(user.u_mail);
-					$('[name=u_date]').val(user.u_date);
+					var artist = JSON.parse(xhr.responseText);
+					$('[name=art_no]').val(artist.art_no);
+					$('[name=art_name]').val(artist.art_name);
+					$('[name=art_gender]').val(artist.art_gender);
+					$('[name=art_group]').val(artist.art_group);
+					$('[name=art_img]').val(artist.art_img);
 				}
 			};
 			xhr.send();
@@ -383,7 +381,7 @@
 		$('#delBtn').on('click', function(){
 			if(confirm("정말 삭제하시겠습니까?")){
 				$('[name=isDelete]').val("true");
-				$('#table-form').submit();
+				$('#table-form').submit();		
 			}
 		});
 		
@@ -401,6 +399,7 @@
 			}
 			select = !select;
 		}
+		
 	</script>
 </body>
 </html>

@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import plo.web.admin.entity.Artist;
+import plo.web.admin.entity.RegUser;
 import plo.web.admin.entity.User;
+import plo.web.admin.service.ArtistManagerService;
 import plo.web.admin.service.DashboardService;
 import plo.web.admin.service.UserManagerService;
 
@@ -24,6 +27,45 @@ public class UserManagerController extends HttpServlet {
 			num = 1;
 		}
 		return num;
+	}
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		
+		String isUpdate = request.getParameter("isUpdate");
+		String isDelete = request.getParameter("isDelete");
+		
+		if(isUpdate != null) {
+			if(isUpdate.equals("true")) {
+				String u_no = request.getParameter("u_no");
+				String u_pass = request.getParameter("u_pass");
+				String u_name = request.getParameter("u_name");
+				String u_mail = request.getParameter("u_mail");
+				String u_date = request.getParameter("u_date");
+				
+				RegUser user = new RegUser();
+				user.setU_no(strToInt(u_no));
+				user.setU_pass(u_pass);
+				user.setU_name(u_name);
+				user.setU_mail(u_mail);
+				user.setU_date_s(u_date);
+				
+				UserManagerService service = new UserManagerService();
+				service.userUpdate(user);
+			}
+		}
+		System.out.println("##########"+isDelete);
+		if(isDelete != null) {
+			if(isDelete.equals("true")) {
+				String[] checkId = request.getParameterValues("checkId");
+				
+				UserManagerService service = new UserManagerService();
+				for(String id : checkId)
+					service.userDel(strToInt(id));
+			}
+		}
+		response.sendRedirect("userManager");
+		
 	}
 	
 	@Override

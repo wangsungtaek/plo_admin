@@ -16,29 +16,22 @@
 <!-- Custom fonts for this template-->
 <link href="${path}/a00_admin/vendor/fontawesome-free/css/all.min.css"
 	rel="stylesheet" type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="${path}/z01_css/admin/sb-admin-2.min.css" rel="stylesheet">
 
 <style>
-#top-nav {
-	height: 100px;
-}
+#top-nav { height: 100px; }
+.container-fluid { padding: 50px; }
 
-.container-fluid {
-	padding: 50px;
-}
 </style>
 </head>
 <body>
 	
-	<div id="top-nav" class="text-center">
-		<%@ include file="../header.jsp" %>
+<!-- 	<div id="top-nav" class="text-center"> -->
+<%-- 		<%@ include file="../header.jsp" %> --%>
 		
-	</div>
+<!-- 	</div> -->
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">

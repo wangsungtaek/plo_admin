@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>PLO</title>
-<link rel="stylesheet" href="z01_css/default.css">
+<link rel="stylesheet" href="../z01_css/default.css">
 <style>
 
      body{
@@ -144,7 +144,7 @@
   <div class="wrapper">
     <div class="main_header">
       <div id="main_logo">
-       <a href="#"><img src="z00_imgs/logo.png"></a>
+       <a href="#"><img src="../z00_imgs/logo.png"></a>
       </div>
      
      <nav id="menubar">

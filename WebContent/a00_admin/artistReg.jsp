@@ -182,105 +182,51 @@
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-3 text-gray-800">회원 정보</h1>
+						<h1 class="h3 mb-3 text-gray-800">아티스트 등록</h1>
 					</div>
 
-					<!-- DataTale -->
-					<div class="card shadow mb-4">
+					<!-- card -->
+					<div class="card shadow mb-4 w-25">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">회원 조회</h6>
+							<h6 class="m-0 font-weight-bold text-primary">아티스트 등록</h6>
 						</div>
 
-						<!-- DataTable : Data -->
+						<!-- card-item -->
 						<div class="card-body pb-0">
-							<div class="table-responsive">
-								<form method="post" id="table-form">
-								<input type="hidden" value="" name="isDelete">
-								<table class="table table-bordered table-hover" id="dataTable"
-									width="100%" cellspacing="0">
-									<thead>
-										<tr> 
-											<th>회원 번호</th>
-											<th>아이디</th>
-											<th>비밀번호</th>
-											<th>이름</th>
-											<th>이메일</th>
-											<th>생년월일</th>
-											<th class="text-center"><input type="checkbox" onclick="allSelect()" /></th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="user" items="${userList}">
-										<tr ondblclick="detail(${user.u_no})">
-											<td>${user.u_no}</td>
-											<td>${user.u_id}</td>
-											<td>${user.u_pass}</td>
-											<td>${user.u_name}</td>
-											<td>${user.u_mail}</td>
-											<td>${user.u_date}</td>
-											<td class="text-center"><input type="checkbox" name="checkId"
-												value="${user.u_no}"/></td>
-										</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-								</form>
+							<form method="get">
+							<div class="input-group mb-3">
+								<span class="input-group-text w-30 d-block" id="inputGroup-sizing-default">아티스트명</span>
+								<input type="text" class="inId form-control" aria-label="Sizing example input" 
+								aria-describedby="inputGroup-sizing-default" placeholder="아티스트명를 입력하세요." name="art_name">
+							</div>
+							
+							<div class="input-group mb-3">
+								<span class="input-group-text w-30 text-center d-block" id="inputGroup-sizing-default">성 별</span>
+								<input type="text" class="inId form-control" aria-label="Sizing example input" 
+								aria-describedby="inputGroup-sizing-default" placeholder="남, 여" name="art_gender">
+							</div>
+							
+							<div class="input-group mb-3">
+								<span class="input-group-text w-30 text-center d-block" id="inputGroup-sizing-default">그룹여부</span>
+								<input type="text" class="inName form-control" aria-label="Sizing example input"
+								aria-describedby="inputGroup-sizing-default" placeholder="그룹, 싱글" name="art_group">
+							</div>
+							
+							<div class="input-group mb-3">
+								<span class="input-group-text w-30 text-center d-block" id="inputGroup-sizing-default">이미지</span>
+								<input type="email" class="inMail form-control" aria-label="Sizing example input"
+							  	aria-describedby="inputGroup-sizing-default" placeholder="img/exam.ping" name="art_img">
 							</div>
 
-							<!-- table bottom -->
-							<div class="row mb-1">
-								<c:set var="page" value="${(empty param.p)?1:param.p}" />
-								<c:set var="startNum" value="${page-(page-1)%5}"/>
-								<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(userCnt/10), '.')}"/>
-
-								<!-- page info -->
-								<div class="col-sm-12 col-md-12 col-lg-2 mb-2">
-									<div>${page} / ${lastNum}</div>
-								</div>
-
-								<!-- page button -->
-								
-								<div class="pageBtn col-sm-12 col-md-9 col-lg-8 text-center mb-3">
-									<form method="get">
-									<div class="btn-group" role="group"
-										aria-label="Basic radio toggle button group">
-										
-										<button type="button" class="btn btn-outline-primary" ${(startNum <= 1)?'disabled':''}
-										onclick="paging(${startNum-1})">
-											Previous
-										</button>
-										
-										<c:forEach begin="${startNum}" end="${startNum+4}" varStatus="status">
-											<c:if test="${lastNum >= status.current}">
-											<button type="button"
-												class="btn btn-${((page)==(status.current))?'':'outline-'}primary"
-												onclick="paging(${status.current})">
-												${status.index}
-											</button>
-											</c:if>
-										</c:forEach>
-										
-										<button type="button" class="btn btn-outline-primary" ${(lastNum <= startNum+4)?'disabled':''}
-										onclick="paging(${startNum+5})">
-											Next
-										</button>
-									</div>
-									</form>
-								</div>
-
-								<!-- del button -->
-								<div class="delBtn col-sm-12 col-md-3 col-lg-2 text-right">
-									<button type="button" class="btn btn-danger" id="delBtn">일괄 삭제</button>
-								</div>
-
-							</div>
-							<!-- End of table bottom -->
-
+							</form>
+							
 						</div>
-						<!-- End of DataTable : Data -->
+						<!-- End of card-item -->
+												
+						<button type="button" class="regBtn btn btn-primary m-3">등 록</button>
 						
 					</div>
-					<!-- End of DataTable -->
+					<!-- End of card -->
 					
 				</div>	
 				<!-- End of Begin Page Content -->
@@ -290,49 +236,10 @@
 
 		</div>
 		<!-- End of Content Wrapper -->
+		
 
 	</div>
 	<!-- End of Wrapper -->
-	
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" hidden data-bs-toggle="modal" data-bs-target="#detail">
-	  Launch demo modal
-	</button>
-	
-	<!-- Detail Modal -->
-	<div class="modal fade" id="detail" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">회원 상세</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				
-				<form method="post" id="modal-form">
-				<input type="hidden" value="" name="isUpdate"/>
-				<div class="modal-body wd-70">
-					<table class="table table-bordered mb-0" width="100%" cellspacing="0">
-						<tr><th>번호</th><td><input name="u_no" type="text" readonly="readonly"/></td></tr>
-						<tr><th>아이디</th><td><input name="u_id" type="text" readonly="readonly"/></td></tr>
-						<tr><th>비밀번호</th><td><input name="u_pass" type="text"/></td></tr>
-						<tr><th>이름</th><td><input name="u_name" type="text"/></td></tr>
-						<tr><th>메일</th><td><input name="u_mail" type="text"/></td></tr>
-						<tr><th>생년월일</th><td><input name="u_date" type="date"/></td></tr>
-					</table>
-				</div>
-				</form>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary"
-						data-bs-dismiss="modal" id="update">수정</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End of Detail Modal -->
 	
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#top-nav"> <i
@@ -352,55 +259,49 @@
 	<script src="${path}/z02_js/admin/sb-admin-2.min.js"></script>
 
 	<script>
-		function paging(page){
-			location.href="?p="+page;
-		}
-		
 		var xhr = new XMLHttpRequest();
-		function detail(no){
-			xhr.open("get", "${path}/a00_admin/z01_userDetail.jsp?no="+no, true);
-			xhr.onreadystatechange = function() {
-				if(xhr.readyState == 4 && xhr.status == 200){
-					var user = JSON.parse(xhr.responseText);
-					$('[name=u_no]').val(user.u_no);
-					$('[name=u_id]').val(user.u_id);
-					$('[name=u_pass]').val(user.u_pass);
-					$('[name=u_name]').val(user.u_name);
-					$('[name=u_mail]').val(user.u_mail);
-					$('[name=u_date]').val(user.u_date);
-				}
-			};
-			xhr.send();
-			$('[data-bs-target="#detail"]').trigger('click');
+		var userList;
+		var regCheck = "${result}";
+		
+		if(regCheck == 'true'){
+			if(confirm("등록이 완료되었습니다. \n조회페이지로 이동하시겠습니까?"))
+				location.href="${path}/artistManager";
 		}
 		
-		// 업데이트
-		$('#update').on('click', function(){
-			$('[name=isUpdate]').val('true');
-			$('#modal-form').submit();
-		});
-		// 삭제
-		$('#delBtn').on('click', function(){
-			if(confirm("정말 삭제하시겠습니까?")){
-				$('[name=isDelete]').val("true");
-				$('#table-form').submit();
+		// 등록
+		$('.regBtn').on('click', function(){
+			var art_name = $('[name=art_name]').val();
+			var art_gender = $('[name=art_gender]').val();
+			var art_group = $('[name=art_group]').val();
+			var art_img = $('[name=art_img]').val();
+			
+			if(art_name == '') {
+				alert('아티스트명을 입력하세요.');
+				$('[name=art_name]').focus();
+				return false;
 			}
-		});
+			else if(art_gender == '') {
+				alert('성별을 입력하세요.');
+				$('[name=art_gender]').focus();
+				return false;
+			}
+			else if(art_group == '') {
+				alert('그룹을 입력하세요.');
+				$('[name=art_group]').val('');
+				$('[name=art_group]').focus();
+				return false;
+			}
+			else if(art_img == '') {
+				alert('이미지경로를 입력하세요.');
+				$('[name=art_img]').val('');
+				$('[name=art_img]').focus();
+				return false;
+			} 
+			else {
+				$('form').submit();
+			}
+		})
 		
-		// 체크박스
-		var select = false;
-		function allSelect(){
-			var allCheckBox = $('[name="checkId"]');
-			for(var i=0; i<allCheckBox.length; i++){
-				if(select == false) {
-					allCheckBox[i].checked = true;
-				}
-				else {
-					allCheckBox[i].checked = false;
-				}
-			}
-			select = !select;
-		}
 	</script>
 </body>
 </html>
